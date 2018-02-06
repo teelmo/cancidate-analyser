@@ -11,7 +11,6 @@ output = []
 for url in urls:
   response = urllib.urlopen(url)
   data = json.loads(response.read())
-  print data
   output.append(data)
 
 
