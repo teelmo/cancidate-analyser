@@ -43,17 +43,17 @@ for person in data:
   i = i + 1
   body = "{'url':'%s'}" % person['14']
   if person_db.find({'url':person['14']}).count() == 0:
-      conn = httplib.HTTPSConnection('westeurope.api.cognitive.microsoft.com')
-      conn.request(method='POST', url='/vision/v1.0/describe', body=body, headers=headers)
-      response = conn.getresponse()
-      response_json = json.loads(response.read())
-      output = {
-        'id':person['1'],
-        'url':person['14'],
-        'text':response_json['description']['captions'][0]['text'],
-        'response':response_json,
-        'data':person
-      }
-      person_db.insert(output)
-      conn.close()
+    conn = httplib.HTTPSConnection('westeurope.api.cognitive.microsoft.com')
+    conn.request(method='POST', url='/vision/v1.0/describe', body=body, headers=headers)
+    response = conn.getresponse()
+    response_json = json.loads(response.read())
+    output = {
+      'id':person['1'],
+      'url':person['14'],
+      'text':response_json['description']['captions'][0]['text'],
+      'response':response_json,
+      'data':person
+    }
+    person_db.insert(output)
+    conn.close()
   print i
