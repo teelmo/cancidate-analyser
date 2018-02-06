@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# -*- coding: UTF8 -*-
+# @See http://www.python.org/dev/peps/pep-0263/
+
 ########### Python 2.7 #############
 import httplib, urllib, base64
 import json
@@ -29,28 +33,27 @@ db = connection.candidate_analyzer
 person_db = db.person
 
 # Clear databases.
-# person_db.remove({})
+person_db.remove({})
 
 i = 0
-with open(file, 'rb') as csvfile:
-  reader = csv.reader(csvfile, delimiter=',', quotechar='"')
-  for row in reader:
-    i = i + 1
-    body = "{'url':'%s'}" % row[1]
-    if person_db.find({'url':row[1]}).count() == 0:
-      try:
-        conn = httplib.HTTPSConnection('westeurope.api.cognitive.microsoft.com')
-        conn.request(method='POST', url='/vision/v1.0/describe', body=body, headers=headers)
-        response = conn.getresponse()
-        data = response.read()
-        output = {
-          'id':row[0],
-          'url':row[1],
-          'text':json.loads(data)['description']['captions'][0]['text'],
-          'response':json.loads(data),
-        }
-        person_db.insert(output)
-        conn.close()
-      except Exception as e:
-        print('[Errno {0}] {1}'.format(e.errno, e.strerror))
-    print i
+response = urllib.urlopen(file)
+data = json.loads(response.read())
+# reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+for person in data:
+  i = i + 1
+  body = "{'url':'%s'}" % person['14']
+  if person_db.find({'url':person['14']}).count() == 0:
+      conn = httplib.HTTPSConnection('westeurope.api.cognitive.microsoft.com')
+      conn.request(method='POST', url='/vision/v1.0/describe', body=body, headers=headers)
+      response = conn.getresponse()
+      response_json = json.loads(response.read())
+      output = {
+        'id':person['1'],
+        'url':person['14'],
+        'text':response_json['description']['captions'][0]['text'],
+        'response':response_json,
+        'data':person
+      }
+      person_db.insert(output)
+      conn.close()
+  print i
