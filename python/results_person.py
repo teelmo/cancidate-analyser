@@ -33,6 +33,8 @@ for element in data_db.find({}).sort('streams',1).limit(100):
     else:
       output[tag] = 1
 
+print len(output)
+
 i = 0
 print '\nLeast viewed videos:'
 for key, value in sorted(output.iteritems(), key=lambda (k,v): (v,k), reverse=True):
