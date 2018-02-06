@@ -33,7 +33,7 @@ db = connection.candidate_analyzer
 person_db = db.person
 
 # Clear databases.
-person_db.remove({})
+#person_db.remove({})
 
 i = 0
 response = urllib.urlopen(file)
