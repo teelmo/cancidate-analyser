@@ -7,12 +7,11 @@ import glob
 
 images = []
 
-for filename in glob.glob('data/*.json'):
+for filename in glob.glob('../data/orig/*.json'):
   response = urllib.urlopen(filename)
   data = json.loads(response.read())
   for person in data:
     if 'http://' in person['14']: 
-      print person['1'] + ',' + person['14']
-      images.append(person['14'])
+      images.append(person)
 
-# print images
+print images
