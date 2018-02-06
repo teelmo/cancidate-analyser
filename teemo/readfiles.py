@@ -5,13 +5,13 @@
 import urllib, json
 import glob
 
-images = []
+output = []
 
 for filename in glob.glob('../data/orig/*.json'):
   response = urllib.urlopen(filename)
   data = json.loads(response.read())
   for person in data:
     if 'http://' in person['14']: 
-      images.append(person)
+      output.append(person)
 
-print images
+print json.dumps(output)
